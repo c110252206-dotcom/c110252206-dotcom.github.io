@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>鄧崴澤的自我介紹</title>
   <style>
     body {
@@ -21,6 +21,23 @@
     header h1 {
       margin: 0;
     }
+    nav {
+      text-align: center;
+      margin: 20px 0;
+    }
+    nav button {
+      margin: 0 8px;
+      padding: 8px 16px;
+      border: none;
+      background-color: #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    nav button.active {
+      background-color: #1565c0;
+      color: white;
+    }
     .container {
       width: 80%;
       margin: auto;
@@ -33,20 +50,28 @@
       background-color: #f5f5f5;
       box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
     }
-    .photos {
+    .photos, #gallery {
       display: flex;
       justify-content: center;
       gap: 20px;
       flex-wrap: wrap;
+      margin-top: 20px;
     }
-    .photos img {
+    .photos img, #gallery img {
       width: 300px;
       border-radius: 10px;
       box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
       transition: transform 0.3s;
+      cursor: pointer;
     }
-    .photos img:hover {
+    .photos img:hover, #gallery img:hover {
       transform: scale(1.05);
+    }
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
     }
   </style>
 </head>
@@ -57,62 +82,128 @@
     <p>課程：網路應用程式設計 | 老師：張子鴻</p>
   </header>
 
-  <div class="container">
-    <div class="info">
-      <h2>基本資訊</h2>
-      <p>班級：進電子系四乙</p>
-      <p>學號：C110252206</p>
-      <p>年齡：22歲</p>
-      <p>身高：185 cm</p>
-      <p>工作單位：台電 鳳山區處（線路課）</p>
-    </div>
+  <nav>
+    <button data-target="section4" class="active">主頁</button>
+    <button data-target="section1">自我介紹</button>
+    <button data-target="section2">血壓量測</button>
+    <button data-target="section3">控制家電</button>
+    <button data-target="section5">百岳紀錄</button>
+  </nav>
 
-    <div class="intro">
-      <h2>自我介紹</h2>
-      <p>
-
-
-
-        我目前在台電鳳山線路課上班，最近剛成為正式員工。
-        
-        興趣是爬山，
-        已經完成92座百岳，擁有山域搜救證、雪訓證書，並曾參與搜救行動。
-        我也喜歡跑步，包括超馬與全馬。
-      </p>
-      <p>
-        我的夢想是成為更成熟穩重的人，在事業上不斷精進，近期剛考取昇空車照，期許未來能考取更多專業證照（甲級配電裝修、
-        升空車、吊臂車、大客車、乙級電纜等等）。未來的路上，會考慮要不要跳去中華電信、
-        或者轉職員升主管，或繼續在外線單位做到退休。目前還可以努力43年💪。
-      
-      </p>
-
-       
-    </div>
+  <!-- 主頁 -->
+  <div id="section4" class="section active">
     <div class="container">
-    <div class="info">
-
-       <h2>工作內容</h2>
-    <p>目前的工作是負責計畫性維護，電桿校正、四路開關、變壓器維護更換、及各種架空線路或地下線路工作、颱風搶修
-
-    </p>
-    </div>
-
-    <div class="photos">
-      <img src="1.jfif" alt="工作照">
-      <img src="2.jfif" alt="登山照">
+      <h2>歡迎來到我的個人網站 👋</h2>
+      <p>您好，我是鄧崴澤，目前就讀進電子系四乙，同時也是台電鳳山區處的正式員工。</p>
+      <p>這個網站是我在「網路應用程式設計」課程中製作的作品，介紹我的個人經歷與專長。</p>
+      <ul>
+        <li>👉 點選上方按鈕可瀏覽各功能頁面</li>
+        <li>📋 自我介紹</li>
+        <li>🩺 血壓量測紀錄</li>
+        <li>🔌 家電遠端控制</li>
+        <li>⛰️ 百岳登山紀錄</li>
+      </ul>
     </div>
   </div>
-<div class="intro">
-      <h2><a href="2.html" target="_blank">控制家電</a></h2>
-     
-    
-   <h2><a href="3.html" target="_blank">健康紀錄表(血壓量測)</a></h2>
 
-    
-      <h2><a href="4.html" target="_blank">百岳紀錄</a></h2>
-  
-
-
+  <!-- 自我介紹 -->
+  <div id="section1" class="section">
+    <div class="container">
+      <div class="info">
+        <h2>基本資訊</h2>
+        <p>班級：進電子系四乙</p>
+        <p>學號：C110252206</p>
+        <p>年齡：22歲</p>
+        <p>身高：185 cm</p>
+        <p>工作單位：台電 鳳山區處（線路課）</p>
+      </div>
+      <div class="intro">
+        <h2>自我介紹</h2>
+        <p>我目前在台電鳳山線路課上班，最近剛成為正式員工。</p>
+        <p>興趣是爬山，已完成92座百岳，擁有山域搜救證、雪訓證書，也曾參與搜救行動。</p>
+        <p>我也熱愛跑步，參與過超馬與全馬賽事。</p>
+        <p>我的目標是在工作上持續進修，考取更多專業證照，未來可能挑戰主管或轉職，也不排除做到退休。目前還可以努力43年💪。</p>
+      </div>
+      <div class="info">
+        <h2>工作內容</h2>
+        <p>工班負責計畫性維護設備點檢，電桿校正、四路開關、變壓器維護與更換、架空線路與地下線路的作業，以及颱風搶修等工作。</p>
+      </div>
+      <div class="photos">
+        <img src="1.jfif" alt="工作照" />
+        <img src="2.jfif" alt="登山照" />
+      </div>
     </div>
+  </div>
+
+  <!-- 血壓量測 -->
+  <div id="section2" class="section">
+    <div class="container">
+      <h2>血壓量測紀錄</h2>
+      <p>這裡可以放血壓紀錄表格或連結：</p>
+      <ul>
+        <li><a href="2.html" target="_blank">🔗 健康紀錄表（血壓量測）</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 控制家電 -->
+  <div id="section3" class="section">
+    <div class="container">
+      <h2>家電控制系統</h2>
+      <p>本頁可以整合遠端控制設備的介紹或控制介面。</p>
+      <ul>
+        <li><a href="3.html" target="_blank">🔗 前往家電控制頁面</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 百岳紀錄 -->
+  <div id="section5" class="section">
+    <div class="container">
+      <div class="intro">
+        <h2>百岳紀錄</h2>
+        <p>
+          我從兩歲開始爬山，國中畢業登上第一座百岳——池有山。<br />
+          目前已完成 89 座百岳，持有山域搜救證（南搜、高雄市山搜義消）、雪訓證書。<br />
+          未來計劃挑戰中央山脈大縱走及國外 8000 公尺高峰。
+        </p>
+      </div>
+      <div id="gallery"></div>
+    </div>
+  </div>
+
+  <script>
+    // 分頁切換功能
+    const buttons = document.querySelectorAll('nav button');
+    const sections = document.querySelectorAll('.section');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        const targetId = button.getAttribute('data-target');
+        sections.forEach(section => {
+          if (section.id === targetId) {
+            section.classList.add('active');
+          } else {
+            section.classList.remove('active');
+          }
+        });
+      });
+    });
+
+    // 百岳照片載入
+    const folderPath = 'images/';
+    const totalImages = 92;
+    const galleryDiv = document.getElementById('gallery');
+
+    for (let i = 1; i <= totalImages; i++) {
+      const img = document.createElement('img');
+      img.src = folderPath + 'photo (' + i + ').jpg';
+      img.alt = '登山照 ' + i;
+      galleryDiv.appendChild(img);
+    }
+  </script>
 </body>
 </html>

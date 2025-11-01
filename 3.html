@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>ESP32-CAM 遠端監控系統</title>
+  <style>
+    body {
+      font-family: "Microsoft JhengHei", sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    #video-stream {
+      margin-top: 20px;
+      border: 3px solid #333;
+      border-radius: 10px;
+      width: 640px;
+      height: 480px;
+      object-fit: cover;
+    }
+    .controls {
+      margin-top: 20px;
+    }
+    button {
+      font-size: 16px;
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #status {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #28a745;
+    }
+  </style>
+</head>
+<body>
+  <h1>ESP32-CAM 遠端監控系統</h1>
+  <p>可即時觀看影像並進行基本控制</p>
+
+  <!-- 即時影像 -->
+  <img id="video-stream" src="" alt="ESP32-CAM 影像串流" />
+
+  <div class="controls">
+    <button id="btnStart">開始串流</button>
+    <button id="btnStop">停止串流</button>
+    <button id="btnFlashOn">開啟補光燈</button>
+    <button id="btnFlashOff">關閉補光燈</button>
+    <button id="btnCapture">拍照</button>
+  </div>
+
+  <p id="status">尚未連線</p>
+
+  <script>
+    // ⚙️ 請改成你的 ESP32-CAM IP 位址
+    const esp32camIP = "http://192.168.4.100"; // ← 改這裡！
+
+    const videoStream = document.getElementById("video-stream");
+    const statusText = document.getElementById("status");
+
+    // 各個按鈕
+    const btnStart = document.getElementById("btnStart");
+    const btnStop = document.getElementById("btnStop");
+    const btnFlashOn = document.getElementById("btnFlashOn");
+    const btnFlashOff = document.getElementById("btnFlashOff");
+    const btnCapture = document.getElementById("btnCapture");
+
+    // 開始影像串流
+    btnStart.addEventListener("click", () => {
+      videoStream.src = `${esp32camIP}:81/stream`;
+      statusText.textContent = "串流中...";
+    });
+
+    // 停止影像串流
+    btnStop.addEventListener("click", () => {
+      videoStream.src = "";
+      statusText.textContent = "串流已停止";
+    });
+
+    // 開啟補光燈
+    btnFlashOn.addEventListener("click", () => {
+      fetch(`${esp32camIP}/control?var=led_intensity&val=255`)
+        .then(() => statusText.textContent = "補光燈已開啟");
+    });
+
+    // 關閉補光燈
+    btnFlashOff.addEventListener("click", () => {
+      fetch(`${esp32camIP}/control?var=led_intensity&val=0`)
+        .then(() => statusText.textContent = "補光燈已關閉");
+    });
+
+    // 拍照
+    btnCapture.addEventListener("click", () => {
+      fetch(`${esp32camIP}/capture`)
+        .then(response => response.blob())
+        .then(blob => {
+          const imgURL = URL.createObjectURL(blob);
+          const win = window.open("");
+          win.document.write(`<img src="${imgURL}" style="width:100%">`);
+        });
+    });
+  </script>
+</body>
+</html>

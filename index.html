@@ -219,6 +219,9 @@
 /* ===============================
    分頁切換
 ================================ */
+/* ===============================
+   分頁切換
+================================ */
 const buttons = document.querySelectorAll("nav button");
 const sections = document.querySelectorAll(".section");
 
@@ -258,13 +261,9 @@ const photoInput   = document.getElementById("photoInput");
 const bpPreview    = document.getElementById("bp-preview");
 const bpResult     = document.getElementById("bp-result");
 const recognizeBtn = document.getElementById("recognizeBtn");
-const sys          = document.getElementById("sys");
-const dia          = document.getElementById("dia");
-const pulse        = document.getElementById("pulse");
-const msg          = document.getElementById("msg");
 
 /* ===============================
-   預覽照片
+   1. 預覽照片
 ================================ */
 function previewImage() {
   const file = photoInput.files[0];
@@ -280,7 +279,7 @@ function previewImage() {
 }
 
 /* ===============================
-   AI 辨識
+   2. AI 辨識照片
 ================================ */
 async function uploadImage() {
   const file = photoInput.files[0];
@@ -302,8 +301,8 @@ async function uploadImage() {
 
       if (data.text && data.text.includes("/")) {
         const parts = data.text.split("/");
-        sys.value = parts[0].replace(/\D/g, "");
-        dia.value = parts[1].replace(/\D/g, "");
+        document.getElementById("sys").value = parts[0].replace(/\D/g, "");
+        document.getElementById("dia").value = parts[1].replace(/\D/g, "");
       }
     } catch (err) {
       bpResult.innerText = "❌ 辨識出錯";
@@ -314,49 +313,49 @@ async function uploadImage() {
 }
 
 /* ===============================
-   送出資料（讀取回傳狀態版）
+   3. 送出資料並取得判斷結果 (修正版)
 ================================ */
 async function submitData() {
-  if (!sys.value || !dia.value) {
-    alert("請填寫血壓數值");
-    return;
-  }
+  const msg = document.getElementById("msg");
+  const data = {
+    sys: document.getElementById("sys").value,
+    dia: document.getElementById("dia").value,
+    pulse: document.getElementById("pulse").value
+  };
+
+  if (!data.sys || !data.dia) return alert("請填寫收縮壓與舒張壓");
 
   msg.style.color = "blue";
-  msg.innerText = "⏳ 資料上傳並診斷中...";
+  msg.innerText = "⏳ 上傳中並取得判斷結果...";
 
   try {
-    // 使用 JSON 格式發送，以便後端處理完後回傳診斷結果
     const response = await fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "cors", 
-      // 注意：這裡不主動標註 Content-Type 是為了減少某些瀏覽器的 Preflight 權限問題
-      body: JSON.stringify({
-        sys: sys.value,
-        dia: dia.value,
-        pulse: pulse.value
-      })
+      method: 'POST',
+      // 💡 注意：不加 headers 可以減少某些瀏覽器的 CORS 預檢問題
+      body: JSON.stringify(data)
     });
 
     const result = await response.json();
 
     if (result.result === "ok") {
-      msg.style.color = "green";
-      // 💡 讀取來自 GAS 試算表的 status 欄位
-      msg.innerText = "✅ 成功存入！診斷結果：" + (result.status || "完成");
+      msg.style.color = "black";
+      // 顯示來自 GAS 回傳的 status (E欄公式結果)
+      msg.innerText = "✅ 已成功存入！判斷結果：" + (result.status || "無回傳");
       
-      // 清空輸入
-      sys.value = "";
-      dia.value = "";
-      pulse.value = "";
+      // 清空輸入框
+      document.getElementById("sys").value = "";
+      document.getElementById("dia").value = "";
+      document.getElementById("pulse").value = "";
     } else {
-      throw new Error(result.message || "上傳失敗");
+      msg.style.color = "red";
+      msg.innerText = "❌ 存入失敗：" + result.message;
     }
 
-  } catch (err) {
-    console.error("提交錯誤:", err);
+  } catch (error) {
+    // 當發生 CORS 轉址問題時會進入這裡
     msg.style.color = "orange";
-    msg.innerText = "⚠️ 資料已嘗試送出，請檢查試算表是否新增。";
+    msg.innerText = "⚠️ 資料已送出，但無法直接顯示判斷結果（請檢查 Sheet E 欄）。";
+    console.error("Error:", error);
   }
 }
 </script>
